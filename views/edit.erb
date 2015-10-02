@@ -1,0 +1,11 @@
+<% if @link %>
+  <form action="/<%= @link.id %>" method="post" id="edit">
+    <input type="hidden" name="_method" value="put">
+    <input type="text" name="url" placeholder="<%= @link.url %>"></input>
+    <input type="checkbox" name="archived" <%= "checked" if @link.archived %>>
+    <input type="submit">
+  </form>
+  <p><a href="/<%= @link.id %>/delete">Delete</a></p>
+<% else %>
+  <p>Link not found.</p>
+<% end %>
