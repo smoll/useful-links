@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf8">
+  <title><%= @title + ' | Useful Links' %></title>
+  <link href="/reset.css" rel="stylesheet">
+  <link href="/style.css" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <hgroup>
+      <h1><a href="/">Useful Links</a></h1>
+      <p>all my links in one place</p>
+    </hgroup>
+  </header>
+
+  <div id="main">
+    <%= yield %>
+  </div>
+
+  <footer>
+    <p><small>Created by <a href="http://github.com/smoll">@smoll</a></small></p>
+  </footer>
+</body>
+</html>

@@ -6,4 +6,15 @@
   </form>
 </section>
 
-<% # display links %>
+<% @links.each do |link| %>
+  <article <%= 'class="complete"' if link.archived %>>
+    <p>
+      <%= link.url %>
+      <span><a href="/<%= link.id %>">[edit]</a></span>
+    </p>
+    <p class="links">
+      <a href="/<%= link.id %>/complete">&#8623;</a>
+    </p>
+    <p class="meta">Created: <%= link.created_at %></p>
+  </article>
+<% end %>

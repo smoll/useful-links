@@ -24,7 +24,7 @@ post "/" do
   link.created_at = Time.now
   link.updated_at = Time.now
   link.save
-  redirect "/links"
+  redirect "/"
 end
 
 get "/links" do
