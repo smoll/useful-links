@@ -28,6 +28,11 @@ post "/" do
   redirect "/"
 end
 
+get "/links" do
+  content_type "application/json"
+  Link.all(order: :id.desc).to_json
+end
+
 get "/:id" do
   @link = Link.get params[:id]
   @title = "Edit link ##{params[:id]}"
@@ -35,22 +40,26 @@ get "/:id" do
 end
 
 put "/:id" do
-  link = Link.get params[:id]
-  link.url = params[:url]
-  link.description = params[:description]
-  link.archived = params[:archived] ? 1 : 0
-  link.created_at = Time.now
-  link.updated_at = Time.now
-  logger.info "Will link be archived? #{link.archived}"
-  link.save
-  redirect "/"
+  logger.info "Params received: #{params}"
+  link_to_edit = Link.get params[:id]
+  logger.info "Link object: #{link_to_edit}"
+  logger.info "Current link_to_edit archival status: #{link_to_edit.archived}"
+  link_to_edit.url = params[:url]
+  link_to_edit.archived = params[:archived] ? 1 : 0
+  link_to_edit.updated_at = Time.now
+  link_to_edit.save
+  logger.info "Final link_to_edit archival status: #{link_to_edit.archived}"
+  redirect "/links"
 end
 
 get "/:id/archived" do
   link = Link.get params[:id]
+  logger.info "Current link archival status: #{link.archived}"
   link.archived = link.archived ? 0 : 1 # flip it
+  link.created_at = Time.now
   link.updated_at = Time.now
   link.save
+  logger.info "Final link archival status: #{link.archived}"
   redirect "/"
 end
 
