@@ -36,13 +36,17 @@ end
 
 put "/:id" do
   link = Link.get params[:id]
-  link.url = params[:url]
-  link.description = params[:description]
+  logger.error "Can't find note #{params[:id]}" unless link
+
+  link.url = params[:url].empty? ? link[:url] : params[:url]
   link.archived = params[:archived] ? 1 : 0
-  link.created_at = Time.now
   link.updated_at = Time.now
-  logger.info "Will link be archived? #{link.archived}"
-  link.save
+
+  if link.save
+    logger.info "Successfully updated link."
+  else
+    logger.error "Error updating link! *** params info: #{params.inspect} *** link info: #{link.inspect}"
+  end
   redirect "/"
 end
 
