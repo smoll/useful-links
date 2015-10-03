@@ -9,7 +9,7 @@
 <% @links.each do |link| %>
   <article <%= 'class="archived"' if link.archived %>>
     <p>
-      <%= link.url %>
+      <a href="<%= link.url %>"><%= link.url %></a>
       <span><a href="/<%= link.id %>">[edit]</a></span>
     </p>
     <p class="links">

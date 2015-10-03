@@ -2,6 +2,8 @@ require "byebug"
 require "data_mapper"
 require "json"
 require "sinatra"
+require "sinatra/flash"
+require "sinatra/redirect_with_flash"
 
 # Load models
 $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/models")
@@ -11,6 +13,8 @@ Dir.glob("#{File.dirname(__FILE__)}/models/*.rb") { |model| require File.basenam
 DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/#{Sinatra::Base.environment}.db"))
 DataMapper.finalize
 DataMapper.auto_upgrade!
+
+enable :sessions
 
 get "/" do
   @links = Link.all(order: :id.desc)
@@ -43,11 +47,13 @@ put "/:id" do
   link.updated_at = Time.now
 
   if link.save
-    logger.info "Successfully updated link."
+    msg = "Successfully updated link."
+    logger.info msg
+    redirect "/", success: msg
   else
     logger.error "Error updating link! *** params info: #{params.inspect} *** link info: #{link.inspect}"
+    redirect "/", error: "Error updating link!"
   end
-  redirect "/"
 end
 
 get "/:id/archived" do
